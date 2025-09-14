@@ -11,7 +11,9 @@ require("dotenv").config();
 
 //routes
 app.use("/auth", authRoutes);
-
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {

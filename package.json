@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/akshaymarch7/netflix-gpt#readme",
   "dependencies": {
+    "@google/genai": "^1.19.0",
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",

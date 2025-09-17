@@ -6,6 +6,7 @@ const {
   getPopularMovies,
   getTrendingMovies,
   getUpcomingMovies,
+  searchMovie,
 } = require("../controllers/tmdb");
 const { validateToken } = require("../middlewares/auth");
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get("/top-rated-movies", validateToken, getTopRatedMovies);
 router.get("/popular-movies", validateToken, getPopularMovies);
 router.get("/trending-movies/:trend", validateToken, getTrendingMovies);
 router.get("/upcoming-movies", validateToken, getUpcomingMovies);
+router.get("/search-movie/:movie", validateToken, searchMovie);
 
 module.exports = router;

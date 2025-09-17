@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const aiRoutes = require("./routes/ai");
+const tmdbRoutes = require("./routes/tmdb");
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(cors());
 //routes
 app.use("/auth", authRoutes);
 app.use("/ai", aiRoutes);
+app.use("/tmdb", tmdbRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");

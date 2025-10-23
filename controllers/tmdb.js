@@ -70,6 +70,7 @@ const getUpcomingMovies = async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://api.themoviedb.org/3/movie/upcoming?page=1",
+      // "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=te-IN&page=1&sort_by=popularity.desc",
       API_OPTIONS
     );
     // console.log(data.data.results);
@@ -93,6 +94,18 @@ const searchMovie = async (req, res) => {
 
   //   console.log(data);
 };
+
+const getGenres = async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://api.themoviedb.org/3/genre/movie/list",
+      API_OPTIONS
+    );
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
 module.exports = {
   getMovieVideos,
   getNowPlayingMovies,
@@ -101,4 +114,5 @@ module.exports = {
   getTrendingMovies,
   getUpcomingMovies,
   searchMovie,
+  getGenres,
 };

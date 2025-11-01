@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { API_OPTIONS } = require("../utils/constants");
+const User = require("../models/user");
 const getMovieVideos = async (req, res) => {
   try {
     const { movieId } = req.params;
@@ -84,6 +85,7 @@ const searchMovie = async (req, res) => {
   try {
     const { movie } = req.params;
     const { data } = await axios.get(
+      //https://api.themoviedb.org/3/movie/1068452?language=en-US
       `https://api.themoviedb.org/3/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`,
       API_OPTIONS
     );
@@ -106,6 +108,57 @@ const getGenres = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+const getLanguages = async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://api.themoviedb.org/3/configuration/languages",
+      API_OPTIONS
+    );
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const getExternalMovieIds = async (req, res) => {
+  try {
+    //https://api.themoviedb.org/3/movie/movie_id/external_ids
+    const { movie_id } = req.params;
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movie_id}/external_ids`,
+      API_OPTIONS
+    );
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+const getMovieDetailsByImdbId = async (req, res) => {
+  try {
+    const { imdbId } = req.params;
+    const { data } = await axios.get(
+      `https://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.OMDB_API_KEY}`
+    );
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const getMovieDetailsByTmdbId = async (req, res) => {
+  try {
+    const { movie_id } = req.params;
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movie_id}?language=en-US`,
+      API_OPTIONS
+    );
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   getMovieVideos,
   getNowPlayingMovies,
@@ -115,4 +168,8 @@ module.exports = {
   getUpcomingMovies,
   searchMovie,
   getGenres,
+  getLanguages,
+  getExternalMovieIds,
+  getMovieDetailsByImdbId,
+  getMovieDetailsByTmdbId,
 };

@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://movies-flix-ott-gpt.vercel.app/",
+  "https://movies-flix-ott-gpt.vercel.app",
 ];
 app.use(
   cors({

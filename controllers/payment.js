@@ -2,6 +2,7 @@ require("dotenv").config();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const User = require("../models/user");
+const { log } = require("console");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -85,6 +86,7 @@ const verifyPayment = async (req, res) => {
 
     // 2) Payment is verified — update user subscription & searchesLeft
     // planMeta contains the GPT info we sent from frontend (search count, period)
+    console.log("Payment verified for user:", userId, "plan:", planId);
     const user = await User.findById(userId);
     if (!user)
       return res

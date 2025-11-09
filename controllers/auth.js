@@ -33,12 +33,15 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(404).json({ message: "User not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
 
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res
         .status(401)
@@ -48,13 +51,13 @@ const loginUser = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
+
     res.status(200).json({
       message: "Login successful",
-      token,
       success: true,
-
+      token,
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         watchList: user.watchList,
@@ -75,14 +78,26 @@ const getUserInfo = async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId);
+
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found", success: false });
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
     }
-    res
-      .status(200)
-      .json({ message: "User info retrieved", success: true, user });
+
+    res.status(200).json({
+      message: "User info retrieved",
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        watchList: user.watchList,
+        subscription: user.subscription,
+        searchesLeft: user.searchesLeft,
+      },
+    });
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",

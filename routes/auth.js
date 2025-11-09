@@ -5,12 +5,14 @@ const {
   addMovieToWatchList,
   removeMovieFromWatchList,
   decrementSearch,
+  getUserInfo,
 } = require("../controllers/auth");
 const { validateToken } = require("../middlewares/auth");
 const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.get("/get-user-info", validateToken, getUserInfo);
 
 router.post("/add-to-watchlist/:movieId", validateToken, addMovieToWatchList);
 router.post(

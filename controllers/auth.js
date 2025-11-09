@@ -71,6 +71,27 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getUserInfo = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+    res
+      .status(200)
+      .json({ message: "User info retrieved", success: true, user });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 const addMovieToWatchList = async (req, res) => {
   try {
     const { movieId } = req.params;
@@ -178,4 +199,5 @@ module.exports = {
   addMovieToWatchList,
   removeMovieFromWatchList,
   decrementSearch,
+  getUserInfo,
 };
